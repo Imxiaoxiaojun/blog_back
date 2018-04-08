@@ -1,0 +1,16 @@
+CREATE DATABASE IF NOT EXISTS `myblog`;
+DROP TABLE IF EXISTS myblog.article;
+CREATE TABLE myblog.article (
+  `id`          BIGINT(11)  NOT NULL,
+  `title`       VARCHAR(50) NOT NULL,
+  `content`     LONGTEXT,
+  `hits`        INT(11)      DEFAULT NULL,
+  `imageurl`    VARCHAR(100) DEFAULT NULL,
+  `category_id` BIGINT(11)   DEFAULT NULL,
+  `create_time` DATETIME     DEFAULT CURRENT_TIMESTAMP,
+  `update_time` DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 100
+  DEFAULT CHARSET = utf8;
