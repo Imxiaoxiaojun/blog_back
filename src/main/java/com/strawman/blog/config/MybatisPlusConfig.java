@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
+ * mybatis数据源配置
  * Created by yj on 2018/4/10.
  */
 @Configuration
