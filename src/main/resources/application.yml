@@ -1,6 +1,14 @@
 server:
   port: 8080
 
+spring:
+  datasource:
+    url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: manage
+    password: spdb1234
+    db-name: myblog
+    filters: log4j,wall,mergeStat
+
 
 ###################  guns配置  ###################
 guns:
@@ -36,14 +44,6 @@ mybatis-plus:
 ##########################################################
 ###################  开发环境的profile  ###################
 ##########################################################
-spring:
-  profiles: dev
-  datasource:
-    url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
-    username: manage
-    password: spdb1234
-    db-name: myblog
-    filters: log4j,wall,mergeStat
 
 
 logging:
