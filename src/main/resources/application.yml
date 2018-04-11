@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  mvc:
+      favicon:
+        enabled: false
   datasource:
     url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: manage
@@ -11,7 +14,7 @@ spring:
 
 
 ###################  guns配置  ###################
-guns:
+blog:
   swagger-open: true #是否开启swagger (true/false)
   kaptcha-open: false #是否开启登录时验证码 (true/false)
   #file-upload-path: d:/tmp  #文件上传目录(不配置的话为java.io.tmpdir目录)
@@ -47,7 +50,7 @@ mybatis-plus:
 
 
 logging:
-  level.root: warn
+  level.root: info
   path: logs/
   file: blog.log
 

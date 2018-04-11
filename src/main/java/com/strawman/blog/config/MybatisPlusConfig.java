@@ -34,6 +34,7 @@ public class MybatisPlusConfig {
      * 单数据源连接池配置
      */
     @Bean
+    @ConditionalOnProperty(prefix = "blog", name = "muti-datasource-open", havingValue = "false")
     public DruidDataSource singleDatasource() {
         return dataSource();
     }
