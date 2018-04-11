@@ -1,0 +1,1 @@
+INSERT INTO myblog.links(name, url, logo, sort) VALUES ("刘杨哥的博客","https://www.liuyangge.com/","",1);
