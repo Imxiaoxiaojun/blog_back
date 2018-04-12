@@ -1,4 +1,4 @@
-package com.strawman.blog;
+package com.sm.blog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

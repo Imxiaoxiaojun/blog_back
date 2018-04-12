@@ -6,7 +6,7 @@ spring:
       favicon:
         enabled: false
   datasource:
-    url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://www.sm.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: manage
     password: spdb1234
     db-name: myblog
@@ -27,7 +27,7 @@ blog:
 ###################  mybatis-plus配置  ###################
 mybatis-plus:
   mapper-locations: classpath*:mapping/*.xml
-  typeAliasesPackage: com.strawman.blog.model
+  typeAliasesPackage: com.smmodel
   global-config:
     id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
     db-column-underline: false

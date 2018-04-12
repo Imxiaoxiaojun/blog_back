@@ -1,10 +1,11 @@
-package com.strawman.blog.config;
-
+package com.sm.blog.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
+import com.strawman.DruidProperties;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(basePackages = {"mapping"})
 public class MybatisPlusConfig {
     @Autowired
-    DruidProperties druidProperties;
+    @Qualifier("druidProperties")
+    private DruidProperties druidProperties;
 
     /**
      * 数据源
