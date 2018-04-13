@@ -1,19 +1,20 @@
 package com.sm.blog.model;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
-
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.activerecord.Model;
+import java.io.Serializable;
 
 /**
  * <p>
  * 
  * </p>
  *
- * @author 'zhuyajun@maoyan.com123
+ * @author 'zhuyajun@maoyan.com
  * @since 2018-04-13
  */
 public class Article extends Model<Article> {

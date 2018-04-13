@@ -1,8 +1,8 @@
 package com.sm.blog.service.impl;
 
-import com.sm.blog.model.Article;
-import com.sm.blog.dao.ArticleMapper;
-import com.sm.blog.service.IArticleService;
+import com.sm.blog.model.Comment;
+import com.sm.blog.dao.CommentMapper;
+import com.sm.blog.service.ICommentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2018-04-13
  */
 @Service
-public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
+public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 
 }

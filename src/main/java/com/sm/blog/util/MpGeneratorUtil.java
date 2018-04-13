@@ -5,7 +5,7 @@ import com.sm.core.config.MpGeneratorConfig;
 
 /**
  * @ClassName MpGeneratorTest
- * @Description TODO
+ * @Description 根据数据库表生成代码模板
  * @Author zhuyajun
  * @Date 2018/4/12 下午1:18
  * @Version 1.0
@@ -13,9 +13,11 @@ import com.sm.core.config.MpGeneratorConfig;
 public class MpGeneratorUtil {
 
     public static void main(String[] args) {
-        String[] tableName = new String[]{"article",""};
+
         MpGeneratorConfig mpGeneratorConfig = new MpGeneratorConfig();
-        mpGeneratorConfig.setTableName(tableName);
+        //要单独生成代码模板的表名，不写默认全部
+        String[] tableName = new String[]{"article",""};
+//        mpGeneratorConfig.setTableName(tableName);
         mpGeneratorConfig.setProgramName("blog_back");
         mpGeneratorConfig.doMpGeneration();
     }

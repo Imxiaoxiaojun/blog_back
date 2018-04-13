@@ -1,6 +1,6 @@
 package com.sm.blog.dao;
 
-import com.sm.blog.model.Article;
+import com.sm.blog.model.ArticleTag;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author 'zhuyajun@maoyan.com
  * @since 2018-04-13
  */
-public interface ArticleMapper extends BaseMapper<Article> {
+public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
 
 }

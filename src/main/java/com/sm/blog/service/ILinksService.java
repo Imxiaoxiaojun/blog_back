@@ -1,6 +1,6 @@
 package com.sm.blog.service;
 
-import com.sm.blog.model.Article;
+import com.sm.blog.model.Links;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author 'zhuyajun@maoyan.com
  * @since 2018-04-13
  */
-public interface IArticleService extends IService<Article> {
+public interface ILinksService extends IService<Links> {
 
 }

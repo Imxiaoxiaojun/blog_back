@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sm.blog.dao.IpLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sm.blog.model.IpLog">
+        <id column="id" property="id" />
+        <result column="sid" property="sid" />
+        <result column="ip" property="ip" />
+        <result column="visit_time" property="visitTime" />
+        <result column="area" property="area" />
+        <result column="uri" property="uri" />
+        <result column="response_time" property="responseTime" />
+        <result column="visit_num" property="visitNum" />
+        <result column="referer" property="referer" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, sid, ip, visit_time AS visitTime, area, uri, response_time AS responseTime, visit_num AS visitNum, referer
+    </sql>
+
+</mapper>
