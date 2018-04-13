@@ -6,7 +6,7 @@ spring:
       favicon:
         enabled: false
   datasource:
-    url: jdbc:mysql://www.sm.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: manage
     password: spdb1234
     db-name: myblog
@@ -23,11 +23,10 @@ blog:
   session-invalidate-time: 1800 #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
   session-validation-interval: 900 #多久检测一次失效的session(只在单机环境下生效) 单位：秒
 
-
 ###################  mybatis-plus配置  ###################
 mybatis-plus:
-  mapper-locations: classpath*:mapping/*.xml
-  typeAliasesPackage: com.smmodel
+  mapper-locations: classpath*:com/sm/blog/dao/mapping/*.xml
+  typeAliasesPackage: com.sm.blog.model
   global-config:
     id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
     db-column-underline: false
@@ -52,7 +51,7 @@ mybatis-plus:
 logging:
   level.root: info
   path: logs/
-  file: blog.log
+#  file: blog.log
 
 
 

@@ -6,10 +6,10 @@ CREATE TABLE myblog.article (
   `content`     LONGTEXT,
   `summary`     VARCHAR(300) NOT NULL COMMENT '概述',
   `hits`        INT(11)               DEFAULT NULL COMMENT '点击数',
-  `imageurl`    VARCHAR(100)          DEFAULT NULL,
+  `image_url`    VARCHAR(100)          DEFAULT NULL,
   `category_id` BIGINT(11)            DEFAULT NULL COMMENT '文章类型',
   `create_time` DATETIME              DEFAULT CURRENT_TIMESTAMP,
-  `update_time` DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `update_timUe` DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS myblog.`category`;
