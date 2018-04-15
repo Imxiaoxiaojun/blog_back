@@ -4,6 +4,7 @@ package com.sm.blog.controller;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.sm.blog.model.Article;
 import com.sm.blog.service.IArticleService;
+import com.sm.core.base.annotion.IPFilter;
 import com.sm.core.base.controller.BaseController;
 import com.sm.core.base.warpper.ResultWarpper;
 import com.sm.core.support.HttpKit;
@@ -27,8 +28,8 @@ public class ArticleController extends BaseController{
     private IArticleService articleService;
 
     @RequestMapping("/detail/{id}")
+    @IPFilter("文章详情")
     public ResultWarpper getDetail(@PathVariable("id") Long id){
-        int a = 1/0;
         return getSuccess(articleService.selectById(id));
     }
 

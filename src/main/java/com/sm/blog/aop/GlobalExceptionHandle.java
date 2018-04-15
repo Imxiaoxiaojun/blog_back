@@ -31,7 +31,6 @@ public class GlobalExceptionHandle {
     @ResponseBody
     public ResultWarpper unknownError(RuntimeException e) {
         LogManager.me().executeLog(LogTaskFactory.exceptionLog(HttpKit.getIp(), e));
-        LogManager.me().executeLog(LogTaskFactory.exceptionLog(HttpKit.getIp(), e));
         log.error("运行时异常:", e);
         return new ResultWarpper(BizExceptionEnum.SERVER_ERROR.getCode(), BizExceptionEnum.SERVER_ERROR.getMessage());
     }
