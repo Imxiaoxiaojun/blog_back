@@ -1,4 +1,16 @@
 CREATE DATABASE IF NOT EXISTS `myblog`;
+DROP TABLE IF EXISTS myblog.`operation_log`;
+CREATE TABLE myblog.`operation_log` (
+  `id` int(65) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `log_type` varchar(255) DEFAULT NULL COMMENT '日志类型',
+  `log_name` varchar(255) DEFAULT NULL COMMENT '日志名称',
+  `user_id` varchar(255) DEFAULT NULL COMMENT '用户id',
+  `status` varchar(255) DEFAULT NULL COMMENT '日志状态',
+  `message` text COMMENT '备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=500 DEFAULT CHARSET=utf8 COMMENT='操作日志';
+
 DROP TABLE IF EXISTS myblog.article;
 CREATE TABLE myblog.article (
   `id`          BIGINT(11)   NOT NULL AUTO_INCREMENT PRIMARY KEY,
