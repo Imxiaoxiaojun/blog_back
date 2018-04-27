@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,8 +30,17 @@ public class IPFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        log.warn(HttpKit.getRequest().getParameter("ClientIp"));
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        String originHeader=((HttpServletRequest) request).getHeader("Origin");
+        if (true) {
+            httpResponse.setHeader("Access-Control-Allow-Origin", originHeader);
+            httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie");
+            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        }
+
         if(ToolUtil.isEmpty(whiteIp) || !Arrays.asList(whiteIp).contains(HttpKit.getIp())){
-            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            log.warn("过滤非白名单IP" + HttpKit.getIp());
             httpResponse.setCharacterEncoding("UTF-8");
             httpResponse.setContentType("application/json; charset=utf-8");
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
