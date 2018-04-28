@@ -2,15 +2,21 @@ server:
   port: 8080
 
 spring:
+  redis:
+    host: 47.100.229.195
+    port: 26379
+    password: spdb1234
+    timeout: 10
   devtools:
     restart:
-      enabled: false
+      enabled: false #热部署开关
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  mvc:
-    favicon:
-    enabled: false
+
+#  mvc:
+#    favicon:
+#      enabled: false
   datasource:
     url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: manage
