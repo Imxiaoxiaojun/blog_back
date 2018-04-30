@@ -2,6 +2,10 @@ package com.sm.blog.dao;
 
 import com.sm.blog.model.ArticleTag;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2018-04-13
  */
 public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
+    @Select("select tag_id as tagId from article_tag where article_id = #{articleId}")
+    List<Long> getTagIds(@Param("articleId") Long articleId);
 
+    @Select("select count(1) from article_tag where tag_id = #{tagId}")
+    Integer getCountByTagId(@Param("tagId") Long tagId);
 }

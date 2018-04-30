@@ -5,6 +5,7 @@ import com.sm.blog.constant.ResponseCode;
 import com.sm.core.base.service.RedisService;
 import com.sm.core.base.warpper.ResultWarpper;
 import com.sm.core.support.HttpKit;
+import com.sm.core.util.DateUtil;
 import com.sm.core.util.ToolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,18 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,8 +28,9 @@ import java.util.Map;
  */
 @Component
 @ConfigurationProperties(prefix = "blog")
-public class IPFilter implements Filter{
+public class IPFilter implements Filter {
     private String[] whiteIp;
+    private int allowedErrorReqNum;
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(IPFilter.class);
 
     @Autowired
@@ -45,59 +43,79 @@ public class IPFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String remoteIp = HttpKit.getIp();
-
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        String remoteIp = HttpKit.getRequest().getHeader("x-forwarded-for");
         log.info("remoteIp=====" + remoteIp);
-        log.info("filter Proxy-Client-IP" + HttpKit.getRequest().getHeader("x-forwarded-for"));
-        log.info("filter WL-Proxy-Client-IP" + HttpKit.getRequest().getHeader("x-forwarded-for"));
         log.info("filter RemoteAddr" + HttpKit.getRequest().getRemoteAddr());
 
         /**
          * 前后端分离跨域
          */
-        if(true){
-            String originHeader=((HttpServletRequest) request).getHeader("Origin");
-            httpResponse.setHeader("Access-Control-Allow-Origin", originHeader);
-            httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie");
-            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        }
 
-        int reqNum = 0;
-        if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)){
-            Map<String,Object> map = (Map) redisService.get(remoteIp + RedisService.TOKEN_TYPE);
-            reqNum = (Integer) map.get("cacheReqNum");
-            String cacheToken =  String.valueOf(map.get("token"));
-            String token = ((HttpServletRequest) request).getHeader("token");
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        ServletOutputStream out = httpResponse.getOutputStream();
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setContentType("application/json; charset=utf-8");
+        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+//        if (true) {
+//            String originHeader = ((HttpServletRequest) request).getHeader("Origin");
+//            httpResponse.setHeader("Access-Control-Allow-Origin", originHeader);
+//            httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie,Token");
+//            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+//            httpResponse.setHeader("Access-Control-Max-Age", "1728000");
+//        }
 
-            if ((StringUtils.isNotBlank(token) && !StringUtils.equals(token, cacheToken)) ||
-                    (StringUtils.isBlank(token) && reqNum > 10)) {
+
+        if (redisService.checkMember(RedisService.BLACK_LIST,remoteIp)){
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 ObjectMapper mapper = new ObjectMapper();
-                ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_ILLEGAL, "非法请求");
-                httpResponse.getWriter().write(mapper.writeValueAsString(result));
-                return;
-            }
-            reqNum += 1;
-        }
-
-        String newToken = ToolUtil.getRandStr(6);
-        Map map = new HashMap(2);
-        map.put("cacheReqNum",reqNum);
-        map.put("token",newToken);
-        redisService.set(remoteIp + RedisService.TOKEN_TYPE,map,RedisService.TWO_HOUR);
-
-        if(ToolUtil.isEmpty(whiteIp) || !Arrays.asList(whiteIp).contains(HttpKit.getIp())){
-            httpResponse.setCharacterEncoding("UTF-8");
-            httpResponse.setContentType("application/json; charset=utf-8");
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            ObjectMapper mapper = new ObjectMapper();
-            ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_NONEAUTH,"您无权限访问");
-            httpResponse.getWriter().write(mapper.writeValueAsString(result));
+                ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_ILLEGAL, "非法请求次数过多，IP锁定中");
+                out.write(mapper.writeValueAsString(result).getBytes());
             return;
         }
 
-        Cookie tokenCookie = new Cookie("TOKEN_COOKIE",ToolUtil.encode(map));
-        ((HttpServletResponse) response).addCookie(tokenCookie);
+        boolean setCookie = false;
+        int reqNum = 0;
+        String token = ((HttpServletRequest) request).getHeader("token");
+        String newToken = null;//有效一分钟，允许错误6次，超过6次加入黑名单列表
+        if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)) {
+            Map<String,Object> map = (Map) redisService.get(remoteIp + RedisService.TOKEN_TYPE);
+            reqNum = (Integer) map.get("cacheReqNum");
+            String cacheToken = String.valueOf(map.get("token"));
+
+            if (!StringUtils.equals(token, cacheToken)) {
+                reqNum += 1;
+                map.put("cacheReqNum", reqNum);
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                ObjectMapper mapper = new ObjectMapper();
+                ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_ILLEGAL, "非法请求!");
+                out.write(mapper.writeValueAsString(result).getBytes());
+
+                if (reqNum > allowedErrorReqNum){
+                    redisService.remove(remoteIp + RedisService.TOKEN_TYPE);
+                    redisService.add(RedisService.BLACK_LIST, map, DateUtil.getRemainTime() / 1000l);
+                    return;
+                }
+                setCookie = true;
+                newToken = cacheToken;
+            }
+
+
+        } else {
+            setCookie = true;
+            newToken = ToolUtil.getRandStr(6);
+            Map map = new HashMap(2);
+            map.put("cacheReqNum", reqNum + 1);
+            map.put("token",newToken);
+            redisService.set(remoteIp + RedisService.TOKEN_TYPE, map, RedisService.TWO_MINUTE);
+        }
+
+        if (setCookie){
+            Cookie tokenCookie = new Cookie("TOKEN_COOKIE", newToken);
+            tokenCookie.setMaxAge(60 * 60 * 24);
+            tokenCookie.setPath("/");
+            httpResponse.addCookie(tokenCookie);
+            out.flush();
+        }
         filterChain.doFilter(request, response);
     }
 
@@ -105,11 +123,20 @@ public class IPFilter implements Filter{
     public void destroy() {
 
     }
-    public void setWhiteIp(String[] whiteIp){
+
+    public void setWhiteIp(String[] whiteIp) {
         this.whiteIp = whiteIp;
     }
 
     public String[] getWhiteIp() {
         return whiteIp;
+    }
+
+    public int getAllowedErrorReqNum() {
+        return allowedErrorReqNum;
+    }
+
+    public void setAllowedErrorReqNum(int allowedErrorReqNum) {
+        this.allowedErrorReqNum = allowedErrorReqNum;
     }
 }

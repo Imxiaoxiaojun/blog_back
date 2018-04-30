@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-04-13
  */
 public interface ICommentService extends IService<Comment> {
-
+    Integer getCountByArticleId(Long articleId);
 }

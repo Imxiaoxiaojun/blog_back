@@ -21,8 +21,7 @@ public class Tag extends Model<Tag> {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String name;
-    private Integer num;
-
+    private String color;
 
     public Long getId() {
         return id;
@@ -40,12 +39,12 @@ public class Tag extends Model<Tag> {
         this.name = name;
     }
 
-    public Integer getNum() {
-        return num;
+    public String getColor() {
+        return color;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override
@@ -58,7 +57,7 @@ public class Tag extends Model<Tag> {
         return "Tag{" +
         "id=" + id +
         ", name=" + name +
-        ", num=" + num +
+        ", color=" + color +
         "}";
     }
 }

@@ -44,6 +44,7 @@ public class Article extends Model<Article> {
     private Date createTime;
     @TableField("update_timUe")
     private Date updateTimue;
+    private String creator;
 
 
     public Long getId() {
@@ -118,6 +119,14 @@ public class Article extends Model<Article> {
         this.updateTimue = updateTimue;
     }
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -135,6 +144,7 @@ public class Article extends Model<Article> {
         ", categoryId=" + categoryId +
         ", createTime=" + createTime +
         ", updateTimue=" + updateTimue +
+        ", creator=" + creator +
         "}";
     }
 }

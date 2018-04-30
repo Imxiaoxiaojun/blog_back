@@ -19,7 +19,7 @@ public class MpGeneratorUtil {
          *  要单独生成代码模板的表名列表慎重填写，会覆盖
          *  *********不写默认全部,会覆盖所有已有的文件************
          */
-        String[] tableName = new String[]{"operation_log"};
+        String[] tableName = new String[]{"banner"};
         mpGeneratorConfig.setTableName(tableName);
         mpGeneratorConfig.setProgramName("blog_back");
         mpGeneratorConfig.doMpGeneration();

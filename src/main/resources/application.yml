@@ -6,10 +6,10 @@ spring:
     host: 47.100.229.195
     port: 26379
     password: spdb1234
-    timeout: 10
+    timeout: 30
   devtools:
     restart:
-      enabled: false #热部署开关
+      enabled: true #热部署开关
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -28,6 +28,7 @@ spring:
 ###################  guns配置  ###################
 blog:
   whiteIp: ["127.0.0.1","0:0:0:0:0:0:0:1"]
+  allowedErrorReqNum: 6
   swagger-open: true #是否开启swagger (true/false)
   kaptcha-open: false #是否开启登录时验证码 (true/false)
   #file-upload-path: d:/tmp  #文件上传目录(不配置的话为java.io.tmpdir目录)

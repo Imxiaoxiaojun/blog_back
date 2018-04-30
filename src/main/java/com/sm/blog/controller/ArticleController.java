@@ -1,17 +1,33 @@
 package com.sm.blog.controller;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.sm.blog.model.Article;
+import com.sm.blog.model.ArticleTag;
+import com.sm.blog.model.Comment;
+import com.sm.blog.model.Tag;
+import com.sm.blog.model.vo.ArticleVo;
 import com.sm.blog.service.IArticleService;
+import com.sm.blog.service.IArticleTagService;
+import com.sm.blog.service.ICommentService;
+import com.sm.blog.service.ITagService;
 import com.sm.core.base.annotion.IPFilter;
 import com.sm.core.base.controller.BaseController;
 import com.sm.core.base.warpper.ResultWarpper;
 import com.sm.core.support.HttpKit;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -26,6 +42,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController extends BaseController{
     @Autowired
     private IArticleService articleService;
+    @Autowired
+    private IArticleTagService iArticleTagService;
+    @Autowired
+    private ITagService iTagService;
+    @Autowired
+    private ICommentService iCommentService;
 
     @RequestMapping("/detail/{id}")
     @IPFilter("文章详情")
@@ -34,10 +56,25 @@ public class ArticleController extends BaseController{
     }
 
     @RequestMapping("/list")
-    public Page<Article> getList(String condition){
-        System.out.println(HttpKit.getIp());
-        Page<Article> page = new Page<>(1,10);
-        return articleService.selectPage(page);
+    public Page getList(String condition){
+        logger.warn(HttpKit.getIp());
+        Page<Article> page = this.getPage(10);
+        Page articlePage = articleService.selectPage(page);
+        List<Article> articles = articlePage.getRecords();
+        List<ArticleVo> articleVos = new ArrayList<>();
+        articlePage.setRecords(articleVos);
+        for (Article article: articles){
+            ArticleVo articleVo = new ArticleVo();
+            BeanUtils.copyProperties(article,articleVo);
+            List<Long> ids = iArticleTagService.getTagIds(article.getId());
+            if (!CollectionUtils.isEmpty(ids)){
+                List<Tag> tags = iTagService.selectBatchIds(ids);
+                articleVo.setTagList(tags);
+            }
+            articleVo.setCommentNum(iCommentService.getCountByArticleId(article.getId()));
+            articleVos.add(articleVo);
+        }
+        return articlePage;
     }
 }
 

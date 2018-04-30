@@ -13,5 +13,4 @@
     <sql id="Base_Column_List">
         id, article_id AS articleId, tag_id AS tagId
     </sql>
-
 </mapper>

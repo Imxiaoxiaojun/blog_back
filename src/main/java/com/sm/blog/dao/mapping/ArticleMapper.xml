@@ -13,11 +13,12 @@
         <result column="category_id" property="categoryId" />
         <result column="create_time" property="createTime" />
         <result column="update_timUe" property="updateTimue" />
+        <result column="creator" property="creator"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, title, content, summary, hits, image_url AS imageUrl, category_id AS categoryId, create_time AS createTime, update_timUe AS updateTimue
+        id, title, content, summary, hits, image_url AS imageUrl, category_id AS categoryId, create_time AS createTime, update_timUe AS updateTimue,creator
     </sql>
 
 </mapper>
