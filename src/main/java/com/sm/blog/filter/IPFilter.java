@@ -75,6 +75,7 @@ public class IPFilter implements Filter {
 
         boolean setCookie = false;
         int reqNum = 0;
+        boolean doChain = true;
         String token = ((HttpServletRequest) request).getHeader("token");
         String newToken = null;//有效一分钟，允许错误6次，超过6次加入黑名单列表
         if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)) {
@@ -84,21 +85,21 @@ public class IPFilter implements Filter {
 
             if (!StringUtils.equals(token, cacheToken)) {
                 reqNum += 1;
+                if (reqNum > allowedErrorReqNum){
+                    redisService.remove(remoteIp + RedisService.TOKEN_TYPE);
+                    redisService.add(RedisService.BLACK_LIST, map, DateUtil.getRemainTime() / 1000l);
+                    return;
+                }
                 map.put("cacheReqNum", reqNum);
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 ObjectMapper mapper = new ObjectMapper();
                 ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_ILLEGAL, "非法请求!");
                 out.write(mapper.writeValueAsString(result).getBytes());
 
-                if (reqNum > allowedErrorReqNum){
-                    redisService.remove(remoteIp + RedisService.TOKEN_TYPE);
-                    redisService.add(RedisService.BLACK_LIST, map, DateUtil.getRemainTime() / 1000l);
-                    return;
-                }
                 setCookie = true;
                 newToken = cacheToken;
+                doChain = false;
             }
-
 
         } else {
             setCookie = true;
@@ -116,7 +117,9 @@ public class IPFilter implements Filter {
             httpResponse.addCookie(tokenCookie);
             out.flush();
         }
-        filterChain.doFilter(request, response);
+        if (doChain) {
+            filterChain.doFilter(request, response);
+        }
     }
 
     @Override
