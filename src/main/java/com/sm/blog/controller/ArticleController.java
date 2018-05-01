@@ -1,12 +1,8 @@
 package com.sm.blog.controller;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.sm.blog.model.Article;
-import com.sm.blog.model.ArticleTag;
-import com.sm.blog.model.Comment;
 import com.sm.blog.model.Tag;
 import com.sm.blog.model.vo.ArticleVo;
 import com.sm.blog.service.IArticleService;
@@ -16,7 +12,6 @@ import com.sm.blog.service.ITagService;
 import com.sm.core.base.annotion.IPFilter;
 import com.sm.core.base.controller.BaseController;
 import com.sm.core.base.warpper.ResultWarpper;
-import com.sm.core.support.HttpKit;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -25,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,9 +49,8 @@ public class ArticleController extends BaseController{
     }
 
     @RequestMapping("/list")
-    public Page getList(String condition){
-        logger.warn(HttpKit.getIp());
-        Page<Article> page = this.getPage(10);
+    public Page getList(String title, Long tagId){
+        Page<Article> page = this.getPage(15);
         Page articlePage = articleService.selectPage(page);
         List<Article> articles = articlePage.getRecords();
         List<ArticleVo> articleVos = new ArrayList<>();
@@ -76,5 +68,11 @@ public class ArticleController extends BaseController{
         }
         return articlePage;
     }
+
+    @RequestMapping("/hotList")
+    public Page getHotList(){
+        return null;
+    }
+
 }
 

@@ -18,9 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,8 +41,9 @@ public class IPFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String remoteIp = HttpKit.getRequest().getHeader("x-forwarded-for");
-        log.info("remoteIp=====" + remoteIp);
+        String remoteIp = HttpKit.getRequest().getHeader("X-Forwarded-For");
+        log.info("X-Forwarded-For ========="  + HttpKit.getRequest().getHeader("X-Forwarded-For"));
+        log.info("X-Real-IP ========="  + HttpKit.getRequest().getHeader("X-Real-IP"));
         log.info("filter RemoteAddr" + HttpKit.getRequest().getRemoteAddr());
 
         /**
