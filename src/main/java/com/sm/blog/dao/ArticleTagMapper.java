@@ -16,8 +16,7 @@ import java.util.List;
  * @since 2018-04-13
  */
 public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
-    @Select("select tag_id as tagId from article_tag where article_id = #{articleId}")
-    List<Long> getTagIds(@Param("articleId") Long articleId);
+    List<Long> getTagIds(Long articleId);
 
     @Select("select count(1) from article_tag where tag_id = #{tagId}")
     Integer getCountByTagId(@Param("tagId") Long tagId);

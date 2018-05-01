@@ -20,5 +20,8 @@
     <sql id="Base_Column_List">
         id, title, content, summary, hits, image_url AS imageUrl, category_id AS categoryId, create_time AS createTime, update_timUe AS updateTimue,creator
     </sql>
+    <select id="getHotArticles" resultType="com.sm.blog.model.Article">
+        SELECT * from article ORDER BY hits limit 0,10
+    </select>
 
 </mapper>

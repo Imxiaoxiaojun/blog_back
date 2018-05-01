@@ -2,6 +2,7 @@ package com.sm.blog.controller;
 
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.sm.blog.model.Article;
 import com.sm.blog.model.Tag;
 import com.sm.blog.model.vo.ArticleVo;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -69,9 +71,10 @@ public class ArticleController extends BaseController{
         return articlePage;
     }
 
-    @RequestMapping("/hotList")
-    public Page getHotList(){
-        return null;
+    @RequestMapping(value = "/hotList", method = RequestMethod.GET)
+    @JsonFilter("id")
+    public List<Article> getHotList(){
+       return articleService.getHotArticles();
     }
 
 }

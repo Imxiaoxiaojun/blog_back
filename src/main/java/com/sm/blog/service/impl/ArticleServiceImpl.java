@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -20,4 +21,9 @@ import javax.annotation.Resource;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
     @Resource
     private ArticleMapper articleMapper;
+
+    @Override
+    public List<Article> getHotArticles() {
+        return articleMapper.getHotArticles();
+    }
 }

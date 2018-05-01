@@ -39,8 +39,7 @@ blog:
 
 ###################  mybatis-plus配置  ###################
 mybatis-plus:
-  type
-  mapper-locations: classpath*:com/sm/blog/dao/**/*.xml
+  mapper-locations: classpath*:mapping/*.xml
   typeAliasesPackage: com.sm.blog.model
   global-config:
     id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)

@@ -1,10 +1,9 @@
 package com.sm.blog.service.impl;
 
-import com.sm.blog.model.ArticleTag;
-import com.sm.blog.dao.ArticleTagMapper;
-import com.sm.blog.service.IArticleTagService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sm.blog.dao.ArticleTagMapper;
+import com.sm.blog.model.ArticleTag;
+import com.sm.blog.service.IArticleTagService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
