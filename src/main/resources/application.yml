@@ -6,7 +6,7 @@ spring:
     host: 47.100.229.195
     port: 26379
     password: spdb1234
-    timeout: 30
+    timeout: 60
   devtools:
     restart:
       enabled: true #热部署开关

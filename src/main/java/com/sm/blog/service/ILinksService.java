@@ -1,7 +1,7 @@
 package com.sm.blog.service;
 
-import com.sm.blog.model.Links;
 import com.baomidou.mybatisplus.service.IService;
+import com.sm.blog.model.Links;
 
 /**
  * <p>
@@ -12,5 +12,4 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2018-04-13
  */
 public interface ILinksService extends IService<Links> {
-
 }
