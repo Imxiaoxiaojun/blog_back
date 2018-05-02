@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface ArticleMapper extends BaseMapper<Article> {
     List<Article> getHotArticles();
+    void updateHit(Long articleId);
 }

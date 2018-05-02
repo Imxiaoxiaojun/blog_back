@@ -5,6 +5,7 @@ import com.sm.blog.dao.ArticleMapper;
 import com.sm.blog.service.IArticleService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,5 +26,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<Article> getHotArticles() {
         return articleMapper.getHotArticles();
+    }
+
+    @Override
+    @Transactional
+    public void updateHit(Long articleId) {
+        articleMapper.updateHit(articleId);
     }
 }

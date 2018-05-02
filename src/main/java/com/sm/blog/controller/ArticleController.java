@@ -12,7 +12,6 @@ import com.sm.blog.service.ICommentService;
 import com.sm.blog.service.ITagService;
 import com.sm.core.base.annotion.IPFilter;
 import com.sm.core.base.controller.BaseController;
-import com.sm.core.base.warpper.ResultWarpper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -46,8 +45,9 @@ public class ArticleController extends BaseController{
 
     @RequestMapping("/detail/{id}")
     @IPFilter("文章详情")
-    public ResultWarpper getDetail(@PathVariable("id") Long id){
-        return getSuccess(articleService.selectById(id));
+    public Article getDetail(@PathVariable("id") Long id){
+        articleService.updateHit(id);
+        return articleService.selectById(id);
     }
 
     @RequestMapping("/list")

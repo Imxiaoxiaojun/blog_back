@@ -15,4 +15,5 @@ import java.util.List;
  */
 public interface IArticleService extends IService<Article> {
     List<Article> getHotArticles();
+    void updateHit(Long articleId);
 }
