@@ -30,7 +30,7 @@ public class LinksController extends BaseController {
     }
     @RequestMapping("/list")
     public Page<Links> getList(){
-        Page<Links> page = this.getPage(15);
+        Page<Links> page = new Page<>(1,5);
         page.setOrderByField("sort");
         page.setAsc(true);
         return linksService.selectPage(page);
