@@ -8,7 +8,7 @@ spring:
     host: 47.100.229.195
     port: 26379
     password: spdb1234
-    timeout: 60
+    timeout: 600
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
