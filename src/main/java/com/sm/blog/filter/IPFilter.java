@@ -42,9 +42,10 @@ public class IPFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String remoteIp = HttpKit.getRequest().getHeader("X-Forwarded-For");
-        log.info("X-Forwarded-For ========="  + HttpKit.getRequest().getHeader("X-Forwarded-For"));
-        log.info("X-Real-IP ========="  + HttpKit.getRequest().getHeader("X-Real-IP"));
-        log.info("filter RemoteAddr" + HttpKit.getRequest().getRemoteAddr());
+        String realIp = HttpKit.getRequest().getHeader("X-Real-IP");
+        String referer = HttpKit.getRequest().getHeader("Referer");
+        String remoteAddress = HttpKit.getRequest().getRemoteAddr();
+        log.info("ForwardIp =" + remoteIp + "&&RealIP=" + realIp + "&&RemoteAddress=" + remoteAddress + "&&referer=" + referer);
 
         /**
          * 前后端分离跨域
