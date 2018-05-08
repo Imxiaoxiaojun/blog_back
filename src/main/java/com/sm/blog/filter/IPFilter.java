@@ -91,14 +91,16 @@ public class IPFilter implements Filter {
                     return;
                 }
                 map.put("cacheReqNum", reqNum);
-                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                /*httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 ObjectMapper mapper = new ObjectMapper();
                 ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_ILLEGAL, "非法请求!");
-                out.write(mapper.writeValueAsString(result).getBytes());
+                out.write(mapper.writeValueAsString(result).getBytes());*/
 
                 setCookie = true;
                 newToken = cacheToken;
-                doChain = false;
+//                doChain = false;
+
+                redisService.set(remoteIp + RedisService.TOKEN_TYPE, map);
             }
 
         } else {
