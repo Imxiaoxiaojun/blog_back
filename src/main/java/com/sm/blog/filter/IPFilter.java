@@ -87,7 +87,7 @@ public class IPFilter implements Filter {
                 reqNum += 1;
                 if (reqNum > allowedErrorReqNum){
                     redisService.remove(remoteIp + RedisService.TOKEN_TYPE);
-                    redisService.add(RedisService.BLACK_LIST, map, DateUtil.getRemainTime() / 1000l);
+                    redisService.add(RedisService.BLACK_LIST, remoteIp, DateUtil.getRemainTime() / 1000l);
                     return;
                 }
                 map.put("cacheReqNum", reqNum);
