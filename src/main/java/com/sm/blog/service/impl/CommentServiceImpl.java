@@ -1,13 +1,14 @@
 package com.sm.blog.service.impl;
 
-import com.sm.blog.model.Comment;
-import com.sm.blog.dao.CommentMapper;
-import com.sm.blog.service.ICommentService;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.sm.blog.dao.CommentMapper;
+import com.sm.blog.model.Comment;
+import com.sm.blog.service.ICommentService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -24,5 +25,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     public Integer getCountByArticleId(Long articleId) {
         return commentMapper.getCountByArticleId(articleId);
+    }
+
+    @Override
+    public Page<Comment> getList(Page<Comment> page, Long articleId) {
+        List<Comment> list = commentMapper.getList(page,articleId);
+        return page.setRecords(list);
     }
 }

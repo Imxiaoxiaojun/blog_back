@@ -1,6 +1,7 @@
 package com.sm.blog.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sm.blog.constant.CommonConstant;
 import com.sm.blog.constant.ResponseCode;
 import com.sm.core.base.service.RedisService;
 import com.sm.core.base.warpper.ResultWarpper;
@@ -78,38 +79,40 @@ public class IPFilter implements Filter {
         boolean doChain = true;
         String token = ((HttpServletRequest) request).getHeader("token");
         String newToken = null;//有效一分钟，允许错误6次，超过6次加入黑名单列表
-        if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)) {
-            Map<String,Object> map = (Map) redisService.get(remoteIp + RedisService.TOKEN_TYPE);
-            reqNum = (Integer) map.get("cacheReqNum");
-            String cacheToken = String.valueOf(map.get("token"));
+        if (!CommonConstant.LOCALIP.contains(remoteIp)){
+            if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)) {
+                Map<String,Object> map = (Map) redisService.get(remoteIp + RedisService.TOKEN_TYPE);
+                reqNum = (Integer) map.get("cacheReqNum");
+                String cacheToken = String.valueOf(map.get("token"));
 
-            if (!StringUtils.equals(token, cacheToken)) {
-                reqNum += 1;
-                if (reqNum > allowedErrorReqNum){
-                    redisService.remove(remoteIp + RedisService.TOKEN_TYPE);
-                    redisService.add(RedisService.BLACK_LIST, remoteIp, DateUtil.getRemainTime() / 1000l);
-                    return;
-                }
-                map.put("cacheReqNum", reqNum);
+                if (!StringUtils.equals(token, cacheToken)) {
+                    reqNum += 1;
+                    if (reqNum > allowedErrorReqNum){
+                        redisService.remove(remoteIp + RedisService.TOKEN_TYPE);
+                        redisService.add(RedisService.BLACK_LIST, remoteIp, DateUtil.getRemainTime() / 1000l);
+                        return;
+                    }
+                    map.put("cacheReqNum", reqNum);
                 /*httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 ObjectMapper mapper = new ObjectMapper();
                 ResultWarpper result = new ResultWarpper(ResponseCode.REQUEST_ILLEGAL, "非法请求!");
                 out.write(mapper.writeValueAsString(result).getBytes());*/
 
-                setCookie = true;
-                newToken = cacheToken;
+                    setCookie = true;
+                    newToken = cacheToken;
 //                doChain = false;
 
-                redisService.set(remoteIp + RedisService.TOKEN_TYPE, map);
-            }
+                    redisService.set(remoteIp + RedisService.TOKEN_TYPE, map);
+                }
 
-        } else {
-            setCookie = true;
-            newToken = ToolUtil.getRandStr(6);
-            Map map = new HashMap(2);
-            map.put("cacheReqNum", reqNum + 1);
-            map.put("token",newToken);
-            redisService.set(remoteIp + RedisService.TOKEN_TYPE, map, RedisService.TWO_MINUTE);
+            }else {
+                setCookie = true;
+                newToken = ToolUtil.getRandStr(6);
+                Map map = new HashMap(2);
+                map.put("cacheReqNum", reqNum + 1);
+                map.put("token",newToken);
+                redisService.set(remoteIp + RedisService.TOKEN_TYPE, map, RedisService.TWO_MINUTE);
+            }
         }
 
         if (setCookie){

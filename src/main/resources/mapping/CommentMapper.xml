@@ -15,5 +15,8 @@
     <sql id="Base_Column_List">
         id, user_name AS userName, content, create_time AS createTime, article_id AS articleId
     </sql>
+    <select id="getList" resultType="com.sm.blog.model.Comment">
+        select * from comment where article_id = #{articleId} order by create_time desc
+    </select>
 
 </mapper>

@@ -1,7 +1,8 @@
 package com.sm.blog.service;
 
-import com.sm.blog.model.Comment;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+import com.sm.blog.model.Comment;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ICommentService extends IService<Comment> {
     Integer getCountByArticleId(Long articleId);
+    Page<Comment> getList(Page<Comment> page, Long articleId);
 }
