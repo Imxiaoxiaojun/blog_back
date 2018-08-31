@@ -27,6 +27,7 @@ public class CommentController extends BaseController {
     @RequestMapping("/list/{id}")
     public Page<Comment> getCommentList(@PathVariable("id") Long id){
         Page<Comment> page = this.getPage(15);
+
         return commentService.getList(page,id);
     }
     @RequestMapping("/list")

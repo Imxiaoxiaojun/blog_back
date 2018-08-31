@@ -11,10 +11,14 @@ import com.sm.core.util.ToolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +29,8 @@ import java.util.Map;
 /**
  * Created by yj on 2018/4/15.
  */
-@Component
-@ConfigurationProperties(prefix = "blog")
+//@Component
+//@ConfigurationProperties(prefix = "blog")
 public class IPFilter implements Filter {
     private String[] whiteIp;
     private int allowedErrorReqNum;
@@ -79,7 +83,7 @@ public class IPFilter implements Filter {
         boolean doChain = true;
         String token = ((HttpServletRequest) request).getHeader("token");
         String newToken = null;//有效一分钟，允许错误6次，超过6次加入黑名单列表
-        if (!CommonConstant.LOCALIP.contains(remoteIp)){
+        if (StringUtils.isNotBlank(realIp) && !CommonConstant.LOCALIP.contains(remoteIp)){
             if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)) {
                 Map<String,Object> map = (Map) redisService.get(remoteIp + RedisService.TOKEN_TYPE);
                 reqNum = (Integer) map.get("cacheReqNum");

@@ -1,13 +1,12 @@
 package com.sm.blog.model;
 
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -30,6 +29,8 @@ public class Comment extends Model<Comment> {
     private Date createTime;
     @TableField("article_id")
     private Long articleId;
+    @TableField("parent_id")
+    private Long parentId;
 
 
     public Long getId() {
@@ -72,6 +73,14 @@ public class Comment extends Model<Comment> {
         this.articleId = articleId;
     }
 
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.id;
@@ -85,6 +94,7 @@ public class Comment extends Model<Comment> {
         ", content=" + content +
         ", createTime=" + createTime +
         ", articleId=" + articleId +
+        ", parentId=" + parentId +
         "}";
     }
 }
