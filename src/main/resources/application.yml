@@ -4,8 +4,8 @@ spring:
   profiles:
     active: dev
   redis:
-    host: 47.100.229.195
-    port: 26379
+    host: www.strawman.xin
+    port: 16379
     password: spdb1234
     timeout: 600
   jackson:
@@ -44,16 +44,16 @@ spring:
   profiles: dev
   devtools:
       restart:
-        enabled: false #热部署开关
+        enabled: true #热部署开关
   datasource:
     url: jdbc:mysql://www.strawman.xin:3306/myblog?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: manage
     password: spdb1234
     db-name: myblog
     filters: log4j,wall,mergeStat
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
 ---
 ##########################################################
 ###################  线上环境的profile  ###################
