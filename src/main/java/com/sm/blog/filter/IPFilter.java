@@ -50,15 +50,17 @@ public class IPFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String remoteIp = HttpKit.getRequest().getHeader("X-Forwarded-For");
         String realIp = HttpKit.getRequest().getHeader("X-Real-IP");
-        String referer = HttpKit.getRequest().getHeader("Referer");
-        String remoteAddress = HttpKit.getRequest().getRemoteAddr();
-        log.info("ForwardIp =" + remoteIp + "&&RealIP=" + realIp + "&&RemoteAddress=" + remoteAddress + "&&referer=" + referer);
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        log.warn(String.valueOf(httpRequest.getRequestURL()));
+//        String referer = HttpKit.getRequest().getHeader("Referer");
+//        String remoteAddress = HttpKit.getRequest().getRemoteAddr();
+//        log.info("ForwardIp =" + remoteIp + "&&RealIP=" + realIp + "&&RemoteAddress=" + remoteAddress + "&&referer=" + referer);
 
         /**
          * 前后端分离跨域
          */
 
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
         ServletOutputStream out = httpResponse.getOutputStream();
         httpResponse.setCharacterEncoding("UTF-8");
         httpResponse.setContentType("application/json; charset=utf-8");
@@ -83,7 +85,7 @@ public class IPFilter implements Filter {
         boolean setCookie = false;
         int reqNum = 0;
         boolean doChain = true;
-        String token = ((HttpServletRequest) request).getHeader("token");
+        String token = (httpRequest.getHeader("token"));
         String newToken = null;//有效一分钟，允许错误6次，超过6次加入黑名单列表
         if (StringUtils.isNotBlank(realIp) && !CommonConstant.LOCALIP.contains(remoteIp)){
             if (redisService.exists(remoteIp + RedisService.TOKEN_TYPE)) {
