@@ -21,8 +21,7 @@ import java.io.Serializable;
 @TableName("ip_log")
 public class IpLog extends Model<IpLog> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 2935346003777062226L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**

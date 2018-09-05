@@ -19,8 +19,7 @@ import java.io.Serializable;
  */
 public class Banner extends Model<Banner> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -2941172414683679607L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     @TableField("banner_name")

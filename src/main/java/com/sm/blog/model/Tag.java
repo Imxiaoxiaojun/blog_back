@@ -16,8 +16,7 @@ import java.io.Serializable;
  */
 public class Tag extends Model<Tag> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 2188518508477609390L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String name;

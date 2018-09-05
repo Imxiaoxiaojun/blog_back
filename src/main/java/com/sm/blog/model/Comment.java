@@ -18,8 +18,7 @@ import java.util.Date;
  */
 public class Comment extends Model<Comment> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 3878014239721138043L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     @TableField("user_name")

@@ -21,8 +21,7 @@ import java.io.Serializable;
 @TableName("operation_log")
 public class OperationLog extends Model<OperationLog> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 4913783736601472893L;
     /**
      * 主键
      */

@@ -17,8 +17,7 @@ import java.io.Serializable;
  */
 public class Category extends Model<Category> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 6133611107585368289L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String name;

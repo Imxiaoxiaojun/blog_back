@@ -19,8 +19,7 @@ import java.io.Serializable;
  */
 public class Weibo extends Model<Weibo> {
 
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 4484634773140376831L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String uid;

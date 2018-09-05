@@ -9,14 +9,14 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d | %highlight(%-5level) | %boldMagenta(%t) | %boldGreen(%c{0}.%M[%L]) : %msg%n</pattern>
+            <pattern>%d | %highlight(%-5level) | %boldMagenta(%t) | %boldGreen(%c{0}.%M[%L]) | %msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_PATH}${LOG_FILE}</File>
         <encoder>
-            <pattern>%d | %highlight(%-5level) | %boldMagenta(%t) | %boldGreen(%c{0}.%M[%L]) : %msg%n</pattern>
+            <pattern>%d | %highlight(%-5level) | %boldMagenta(%t) | %boldGreen(%c{0}.%M[%L]) | %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 添加.gz 历史日志会启用压缩 大大缩小日志文件所占空间 -->
